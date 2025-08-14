@@ -82,6 +82,49 @@
     ```shell
     Please unlock disc sdcard: _
     ```
+
+## Setup Auto-Decrypt (Optional)
+
+If you want to avoid entering the password manually every boot, you can set up automatic decryption using one of these methods:
+
+1. **Run the setup menu script:**
+
+    ```shell
+    sudo /boot/install/setup_auto_decrypt_menu.sh
+    ```
+
+2. **Choose your preferred method:**
+
+   - **Boot Partition Keyfile** (Simple but lower security)
+     - Keyfile stored on boot partition
+     - Fastest boot time
+     - Anyone with SD card access can potentially access keyfile
+
+   - **USB Keyfile** (Balanced security and convenience)
+     - Keyfile stored on USB drive
+     - Good security with physical separation
+     - Requires USB drive during boot
+
+   - **Network Keyfile** (Highest security)
+     - Keyfile downloaded from secure server
+     - Best security with remote storage
+     - Requires network connectivity during boot
+
+3. **Or run individual scripts directly:**
+
+    ```shell
+    # For boot partition keyfile:
+    sudo /boot/install/6.setup_auto_decrypt.sh
+    
+    # For USB keyfile:
+    sudo /boot/install/7.setup_usb_auto_decrypt.sh
+    
+    # For network keyfile:
+    sudo /boot/install/8.setup_network_auto_decrypt.sh
+    ```
+
+**Security Note:** Auto-decrypt trades security for convenience. Choose the method that best fits your security requirements.
+
 ____
 
 ## References
