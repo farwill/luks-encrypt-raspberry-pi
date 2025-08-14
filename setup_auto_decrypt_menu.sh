@@ -52,8 +52,8 @@ while true; do
             echo ""
             read -p "Do you want to continue? (y/n): 您要繼續嗎？(y/n): " confirm
             if [ "$confirm" = "y" ] || [ "$confirm" = "Y" ]; then
-                chmod +x /boot/install/6.setup_auto_decrypt.sh
-                /boot/install/6.setup_auto_decrypt.sh
+                chmod +x /boot/firmware/install/6.setup_auto_decrypt.sh
+                /boot/firmware/install/6.setup_auto_decrypt.sh
             fi
             break
             ;;
@@ -69,8 +69,8 @@ while true; do
             echo ""
             read -p "Do you have a USB drive connected? (y/n): 您是否已連接 USB 隨身碟？(y/n): " confirm
             if [ "$confirm" = "y" ] || [ "$confirm" = "Y" ]; then
-                chmod +x /boot/install/7.setup_usb_auto_decrypt.sh
-                /boot/install/7.setup_usb_auto_decrypt.sh
+                chmod +x /boot/firmware/install/7.setup_usb_auto_decrypt.sh
+                /boot/firmware/install/7.setup_usb_auto_decrypt.sh
             fi
             break
             ;;
@@ -86,8 +86,8 @@ while true; do
             echo ""
             read -p "Do you have a keyfile server ready? (y/n): 您是否準備好了 keyfile 伺服器？(y/n): " confirm
             if [ "$confirm" = "y" ] || [ "$confirm" = "Y" ]; then
-                chmod +x /boot/install/8.setup_network_auto_decrypt.sh
-                /boot/install/8.setup_network_auto_decrypt.sh
+                chmod +x /boot/firmware/install/8.setup_network_auto_decrypt.sh
+                /boot/firmware/install/8.setup_network_auto_decrypt.sh
             fi
             break
             ;;

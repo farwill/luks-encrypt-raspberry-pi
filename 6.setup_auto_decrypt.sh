@@ -60,7 +60,7 @@ echo "更新 /etc/crypttab..."
 cp /etc/crypttab /etc/crypttab.backup
 
 # Update crypttab entry to include keyfile
-sed -i 's|sdcard /dev/mmcblk0p2 none luks|sdcard /dev/mmcblk0p2 /boot/firmware/luks-keys/root.key luks|g' /etc/crypttab
+sed -i 's|sdcard /dev/mmcblk0p2 none luks|sdcard /dev/mmcblk0p2 /boot/luks-keys/root.key luks|g' /etc/crypttab
 
 # Create initramfs hook to include keyfile
 echo "Creating initramfs hook..."
@@ -87,9 +87,9 @@ esac
 
 # Copy the keyfile into initramfs
 if [ -f /boot/firmware/luks-keys/root.key ]; then
-    mkdir -p "${DESTDIR}/boot/firmware/luks-keys"
-    cp /boot/firmware/luks-keys/root.key "${DESTDIR}/boot/firmware/luks-keys/"
-    chmod 600 "${DESTDIR}/boot/firmware/luks-keys/root.key"
+    mkdir -p "${DESTDIR}/boot/luks-keys"
+    cp /boot/firmware/luks-keys/root.key "${DESTDIR}/boot/luks-keys/"
+    chmod 600 "${DESTDIR}/boot/luks-keys/root.key"
 fi
 EOF
 
@@ -103,7 +103,7 @@ mkinitramfs -o /boot/firmware/initramfs.gz
 # Verify keyfile is included in initramfs
 echo "Verifying keyfile inclusion..."
 echo "驗證 keyfile 是否包含在 initramfs 中..."
-if lsinitramfs /boot/firmware/initramfs.gz | grep -q "boot/firmware/luks-keys/root.key"; then
+if lsinitramfs /boot/firmware/initramfs.gz | grep -q "boot/luks-keys/root.key"; then
     echo "✓ Keyfile successfully included in initramfs"
     echo "✓ Keyfile 已成功包含在 initramfs 中"
 else

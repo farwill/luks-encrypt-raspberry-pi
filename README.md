@@ -12,6 +12,7 @@
 1. Burn the Raspberry PI OS to the SDCard w/ `Balenar Etcher` or `Raspberry PI Imager`
 
 2. Copy install scripts into `/boot/firmware/install/`
+   (Note: In newer Raspberry Pi OS versions, the boot partition is mounted at `/boot/firmware/`)
 
 3. Boot into the Raspberry PI and run `sudo /boot/firmware/install/1.update.sh`
 
@@ -33,11 +34,13 @@
     mkdir /tmp/boot
     mount /dev/mmcblk0p1 /tmp/boot/
     ```
+    
+    Note: After mounting, scripts will be available at `/tmp/boot/install/` since the boot partition content is directly accessible.
 
 2. Run the encryption script, passing your flash drive descriptor:
 
     ```shell
-    /tmp/boot/firmware/install/3.disk_encrypt_initramfs.sh [sda|sdb|etc] 
+    /tmp/boot/install/3.disk_encrypt_initramfs.sh [sda|sdb|etc] 
     ```
 
 3. When LUKS encrypts the root partition it will ask you to type `YES` (in uppercase).
@@ -57,11 +60,13 @@
     mkdir /tmp/boot
     mount /dev/mmcblk0p1 /tmp/boot/
     ```
+    
+    Note: After mounting, scripts will be available at `/tmp/boot/install/`
 
 2. Open the LUKS encrypted disk:
 
     ```shell
-    /tmp/boot/firmware/install/4.luks_open.sh
+    /tmp/boot/install/4.luks_open.sh
     ```
   
 3. Type in your decryption password again.
