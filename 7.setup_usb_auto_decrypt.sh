@@ -208,7 +208,7 @@ chmod +x /etc/initramfs-tools/hooks/usb-luks
 # Update initramfs
 echo "Rebuilding initramfs..."
 echo "重建 initramfs..."
-mkinitramfs -o /boot/initramfs.gz
+mkinitramfs -o /boot/firmware/initramfs.gz
 
 echo ""
 echo "=== Setup Complete ==="
@@ -240,4 +240,4 @@ echo "1. sudo cryptsetup luksRemoveKey /dev/mmcblk0p2 /mnt/usb-key/luks-root.key
 echo "2. sudo cp /etc/crypttab.backup /etc/crypttab"
 echo "3. sudo rm /bin/usb-keyfile-script"
 echo "4. sudo rm /etc/initramfs-tools/hooks/usb-luks"
-echo "5. sudo mkinitramfs -o /boot/initramfs.gz"
+echo "5. sudo mkinitramfs -o /boot/firmware/initramfs.gz"

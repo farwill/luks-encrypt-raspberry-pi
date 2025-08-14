@@ -22,8 +22,8 @@ if ! cryptsetup isLuks /dev/mmcblk0p2; then
 fi
 
 # Create keyfile directory
-KEYFILE_DIR="/boot/luks-keys"
-KEYFILE_PATH="/boot/luks-keys/root.key"
+KEYFILE_DIR="/boot/firmware/luks-keys"
+KEYFILE_PATH="/boot/firmware/luks-keys/root.key"
 
 echo "Creating keyfile directory..."
 echo "創建 keyfile 目錄..."
@@ -60,7 +60,7 @@ echo "更新 /etc/crypttab..."
 cp /etc/crypttab /etc/crypttab.backup
 
 # Update crypttab entry to include keyfile
-sed -i 's|sdcard /dev/mmcblk0p2 none luks|sdcard /dev/mmcblk0p2 /boot/luks-keys/root.key luks|g' /etc/crypttab
+sed -i 's|sdcard /dev/mmcblk0p2 none luks|sdcard /dev/mmcblk0p2 /boot/firmware/luks-keys/root.key luks|g' /etc/crypttab
 
 # Create initramfs hook to include keyfile
 echo "Creating initramfs hook..."
@@ -86,10 +86,10 @@ esac
 . /usr/share/initramfs-tools/hook-functions
 
 # Copy the keyfile into initramfs
-if [ -f /boot/luks-keys/root.key ]; then
-    mkdir -p "${DESTDIR}/boot/luks-keys"
-    cp /boot/luks-keys/root.key "${DESTDIR}/boot/luks-keys/"
-    chmod 600 "${DESTDIR}/boot/luks-keys/root.key"
+if [ -f /boot/firmware/luks-keys/root.key ]; then
+    mkdir -p "${DESTDIR}/boot/firmware/luks-keys"
+    cp /boot/firmware/luks-keys/root.key "${DESTDIR}/boot/firmware/luks-keys/"
+    chmod 600 "${DESTDIR}/boot/firmware/luks-keys/root.key"
 fi
 EOF
 
@@ -98,12 +98,12 @@ chmod +x /etc/initramfs-tools/hooks/luks-keyfile
 # Update initramfs
 echo "Rebuilding initramfs..."
 echo "重建 initramfs..."
-mkinitramfs -o /boot/initramfs.gz
+mkinitramfs -o /boot/firmware/initramfs.gz
 
 # Verify keyfile is included in initramfs
 echo "Verifying keyfile inclusion..."
 echo "驗證 keyfile 是否包含在 initramfs 中..."
-if lsinitramfs /boot/initramfs.gz | grep -q "boot/luks-keys/root.key"; then
+if lsinitramfs /boot/firmware/initramfs.gz | grep -q "boot/firmware/luks-keys/root.key"; then
     echo "✓ Keyfile successfully included in initramfs"
     echo "✓ Keyfile 已成功包含在 initramfs 中"
 else
@@ -139,4 +139,4 @@ echo "1. sudo cryptsetup luksRemoveKey /dev/mmcblk0p2 $KEYFILE_PATH"
 echo "2. sudo cp /etc/crypttab.backup /etc/crypttab"
 echo "3. sudo rm -rf $KEYFILE_DIR"
 echo "4. sudo rm /etc/initramfs-tools/hooks/luks-keyfile"
-echo "5. sudo mkinitramfs -o /boot/initramfs.gz"
+echo "5. sudo mkinitramfs -o /boot/firmware/initramfs.gz"
