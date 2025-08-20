@@ -82,6 +82,62 @@
     ```shell
     Please unlock disc sdcard: _
     ```
+
+## Automatic LUKS Decryption Setup
+
+### 6.setup_auto_decrypt.sh
+
+This script configures your Raspberry Pi to automatically decrypt the LUKS-encrypted root partition at boot using a keyfile stored on the boot partition and included in the initramfs.
+
+**Usage:**
+
+1. Run the script as root:
+    ```shell
+    sudo /boot/install/6.setup_auto_decrypt.sh
+    ```
+2. Enter your current LUKS password when prompted to add the keyfile.
+3. The script will:
+    - Generate a random keyfile in `/boot/config/system.cfg`.
+    - Add the keyfile to your LUKS device (`/dev/mmcblk0p2`).
+    - Update `/etc/crypttab` to use the keyfile for unlocking.
+    - Create an initramfs hook to include the keyfile in the boot image.
+    - Rebuild the initramfs.
+    - Verify the keyfile is included in the new initramfs.
+
+**Testing:**
+
+1. Reboot your Raspberry Pi:
+    ```shell
+    sudo reboot
+    ```
+2. The system should boot automatically without prompting for a LUKS password.
+
+**Security Notes:**
+
+- The keyfile is stored on the boot partition, which is not encrypted.
+- Anyone with physical access to the SD card can access the keyfile and decrypt the root partition.
+- This setup trades security for convenience. Use only in trusted environments.
+
+**To revert to password-based encryption:**
+
+1. Remove the keyfile from LUKS:
+    ```shell
+    sudo cryptsetup luksRemoveKey /dev/mmcblk0p2 /boot/config/system.cfg
+    ```
+2. Restore the original crypttab:
+    ```shell
+    sudo cp /etc/crypttab.backup /etc/crypttab
+    ```
+3. Remove the keyfile and hook:
+    ```shell
+    sudo rm -rf /boot/config
+    sudo rm /etc/initramfs-tools/hooks/config-loader
+    ```
+4. Rebuild initramfs:
+    ```shell
+    sudo mkinitramfs -o /boot/initramfs.gz
+    ```
+
 ____
 
 ## References
